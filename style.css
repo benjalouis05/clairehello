@@ -1,0 +1,171 @@
+:root {
+    --bg-gradient: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    --text-color: #333;
+    --bubble-bg: white;
+}
+
+* {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none; /* For safari */
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling */
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg-gradient);
+    touch-action: none; /* Prevent browser touch actions like pinch-zoom */
+}
+
+#game-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#hit-me-title {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    z-index: 5;
+    pointer-events: none;
+}
+
+#penguin-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.1s ease;
+}
+
+/* Make text a bit larger and add a soft shadow for depth */
+#penguin {
+    font-size: 80px;
+    line-height: 1;
+    filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.15));
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#penguin:active {
+    transform: scale(0.9);
+}
+
+/* Waddle animation */
+@keyframes waddle {
+    0% { transform: rotate(-10deg); }
+    50% { transform: rotate(10deg); }
+    100% { transform: rotate(-10deg); }
+}
+
+.waddling #penguin {
+    animation: waddle 0.5s infinite linear;
+}
+
+.running #penguin {
+    animation: waddle 0.15s infinite linear;
+}
+
+#speech-bubble {
+    background: var(--bubble-bg);
+    color: var(--text-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+#speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px 8px 0;
+    border-style: solid;
+    border-color: var(--bubble-bg) transparent transparent transparent;
+}
+
+#speech-bubble.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hidden {
+    display: none !important;
+}
+
+#final-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.85); /* Light glassmorphism */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 1s ease;
+    padding: 20px;
+    text-align: center;
+}
+
+#final-overlay.fade-in {
+    opacity: 1;
+}
+
+.glow-text {
+    font-size: 2.5rem;
+    color: #ff6b6b;
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.hearts {
+    font-size: 2rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Mobile optimizations */
+@media (max-width: 600px) {
+    #penguin {
+        font-size: 70px;
+    }
+    .glow-text {
+        font-size: 1.8rem;
+    }
+}
